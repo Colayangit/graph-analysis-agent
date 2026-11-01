@@ -1,0 +1,442 @@
+{
+  "_说明": "围绕生产图『海关业务底账-0109_1』真实结构（15 顶点 + 9 边）手工填完整。所有字段均对齐 getSchema 返回的 displayName/fromAndToTypes，无需再人工校对。换图请新建对应 schema_notes.<图名>.json。",
+  "graph": "海关业务底账-0109_1",
+
+  "core_semantics": {
+    "anchor_label": "业务子项",
+    "candidate_labels": ["业务子项", "业务事项", "信息系统"],
+    "dependency_enabled": false,
+    "dependency_rel": "",
+    "dependency_depth": 1,
+    "hosting_rel": "承载",
+    "system_label": "信息系统",
+    "name_prop": "名称",
+    "rollup_exclude_rels": ["协同"]
+  },
+
+  "aliases": {
+    "系统":    ["信息系统"],
+    "平台":    ["信息系统"],
+    "业务系统": ["信息系统"],
+    "信息化系统": ["信息系统"],
+    "部门":    ["主管部门", "海关部门"],
+    "司局":    ["海关部门", "主管部门"],
+    "处室":    ["主管部门"],
+    "科室":    ["主管部门"],
+    "主办部门": ["主管部门"],
+    "主办单位": ["主管部门"],
+    "办理单位": ["主管部门"],
+    "单位":    ["主管部门", "海关部门"],
+    "海关":    ["海关部门"],
+    "岗位":    ["角色岗位"],
+    "角色":    ["角色岗位"],
+    "职责":    ["角色岗位"],
+    "工种":    ["角色岗位"],
+    "需求":    ["信息化需求"],
+    "信息化需求": ["信息化需求"],
+    "任务":    ["智慧海关任务", "任务"],
+    "海关任务": ["智慧海关任务"],
+    "智慧海关": ["智慧海关任务"],
+    "工作任务": ["任务"],
+    "子项":    ["业务子项"],
+    "子事项":  ["业务子项"],
+    "环节":    ["业务子项"],
+    "事项":    ["业务事项"],
+    "业务":    ["业务事项", "业务子项"],
+    "业务项":  ["业务事项", "业务子项"],
+    "办理业务": ["业务事项", "业务子项"],
+    "作业":    ["作业"],
+    "功能":    ["作业"],
+    "功能模块": ["作业"],
+    "流程节点": ["作业"],
+    "数据节点": ["作业"],
+    "应用":    ["应用"],
+    "App":    ["应用"],
+    "应用程序": ["应用"],
+    "服务对象": ["相对人"],
+    "相对人":  ["相对人"],
+    "服务":    ["相对人"],
+    "办理人":  ["相对人"],
+    "办事人":  ["相对人"],
+    "对象":    ["对象", "子对象"],
+    "数据对象": ["对象", "子对象"],
+    "业务对象": ["对象"],
+    "证照":    ["对象"],
+    "证件":    ["对象"],
+    "证书":    ["对象"],
+    "单证":    ["对象"],
+    "子对象":  ["子对象"],
+    "数据项":  ["子对象"],
+    "字段":    ["子对象"],
+    "协同":    ["协同业务事项"],
+    "协同业务": ["协同业务事项"],
+    "协同事项": ["协同业务事项"]
+  },
+
+  "name_properties": {
+    "对象":         {"name": "名称",                "id": "id~"},
+    "角色岗位":     {"name": "名称",                "id": "id~"},
+    "信息化需求":   {"name": "名称",                "id": "id~"},
+    "任务":         {"name": "任务名称(节点名称)",  "id": "id~"},
+    "业务子项":     {"name": "名称",                "id": "id~"},
+    "相对人":       {"name": "服务对象",            "id": "id~"},
+    "业务事项":     {"name": "名称",                "id": "id~"},
+    "主管部门":     {"name": "事项主管部门/处室",   "id": "id~"},
+    "作业":         {"name": "功能模块名称",        "id": "id~"},
+    "协同业务事项": {"name": "协同业务名称",        "id": "id~"},
+    "海关部门":     {"name": "司局",                "id": "id~"},
+    "子对象":       {"name": "名称",                "id": "id~"},
+    "信息系统":     {"name": "名称",                "id": "id~"},
+    "智慧海关任务": {"name": "任务名称(节点名称)",  "id": "id~"},
+    "应用":         {"name": "应用名称",            "id": "id~"}
+  },
+
+  "relationship_meanings": {
+    "承载": {"含义": "信息系统承载业务子项的办理",         "方向": "信息系统 -> 业务子项"},
+    "使用": {"含义": "角色岗位使用信息系统办理工作",       "方向": "角色岗位 -> 信息系统"},
+    "协同": {"含义": "主管部门发起协同；协同业务连向业务子项", "方向": "主管部门 -> 协同业务事项 -> 业务子项"},
+    "权属": {"含义": "对象的服务对象（归属的相对人）",     "方向": "对象 -> 相对人"},
+    "映射": {"含义": "应用与作业的实现对应（双向）",       "方向": "应用 <-> 作业"},
+    "执行": {"含义": "主管部门执行/办理业务子项",         "方向": "主管部门 -> 业务子项"},
+    "上位": {"含义": "作业归属的上位业务子项",            "方向": "作业 -> 业务子项"},
+    "隶属": {"含义": "对象在业务子项中被使用（归属业务）", "方向": "对象 -> 业务子项"},
+    "下位": {"含义": "对象包含的子对象（上下级）",         "方向": "对象 -> 子对象"},
+    "包括": {"含义": "组成/涵盖，语义依两端类型而定：海关部门包含主管部门、业务事项包括业务子项/信息化需求、任务包括业务事项/智慧海关任务、信息系统包括应用", "方向": "多态"}
+  },
+
+  "influence_rules": {
+    "本图特点": "没有显式『业务依赖』关系，所有边都是 1 跳结构关联。变更分析按『业务子项』为锚，列出其承载系统/隶属对象/主管部门/关联作业/所属业务事项/协同事项作为需要检查的范围，不做变长传播推理。",
+    "承载": "业务子项变更 → 承载它的信息系统需同步检查接口和数据结构。",
+    "执行": "业务子项变更 → 执行它的主管部门需知情并评估流程调整。",
+    "隶属": "业务子项变更 → 涉及的对象（服务对象/数据对象）字段可能连带变更。",
+    "上位": "业务子项变更 → 下属作业的功能模块定义需同步修订。",
+    "协同": "业务子项变更 → 协同事项需同步联动核对。",
+    "包括(业务事项→业务子项)": "业务子项是业务事项的组成，变更要向上归属到业务事项层面汇报影响。",
+    "包括(信息系统→应用)": "系统变更要列出其下所有应用。",
+    "多态关系判定": "『包括』关系在报告里必须按 (src_label, tgt_label) 展开成具体语义，不得合并表述。"
+  },
+
+  "entity_roles": {
+    "业务子项": {
+      "propagate": [
+        {"rel": "承载", "direction": "in", "label": "信息系统",     "depth": 1, "role": "承载系统"},
+        {"rel": "执行", "direction": "in", "label": "主管部门",     "depth": 1, "role": "主管部门"},
+        {"rel": "隶属", "direction": "in", "label": "对象",         "depth": 1, "role": "关联对象"},
+        {"rel": "上位", "direction": "in", "label": "作业",         "depth": 1, "role": "上位作业"},
+        {"rel": "协同", "direction": "in", "label": "协同业务事项", "depth": 1, "role": "协同事项"},
+        {"rel": "包括", "direction": "in", "label": "业务事项",     "depth": 1, "role": "所属业务事项"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "包括", "label": "业务事项", "direction": "in"}]
+      ]
+    },
+    "业务事项": {
+      "propagate": [
+        {"rel": "包括", "direction": "out", "label": "业务子项",   "depth": 1, "role": "包含子项"},
+        {"rel": "包括", "direction": "out", "label": "信息化需求", "depth": 1, "role": "关联需求"},
+        {"rel": "包括", "direction": "in",  "label": "任务",       "depth": 1, "role": "所属任务"}
+      ],
+      "compose": {"rel": "包括", "child": "业务子项"}
+    },
+    "信息系统": {
+      "propagate": [
+        {"rel": "承载", "direction": "out", "label": "业务子项", "depth": 1, "role": "承载的业务子项"},
+        {"rel": "包括", "direction": "out", "label": "应用",     "depth": 1, "role": "包含应用"},
+        {"rel": "使用", "direction": "in",  "label": "角色岗位", "depth": 1, "role": "使用的角色岗位"}
+      ],
+      "compose": {"rel": "包括", "child": "应用"}
+    },
+    "应用": {
+      "propagate": [
+        {"rel": "包括", "direction": "in",  "label": "信息系统", "depth": 1, "role": "所属信息系统"},
+        {"rel": "映射", "direction": "out", "label": "作业",     "depth": 1, "role": "映射的作业"},
+        {"rel": "映射", "direction": "in",  "label": "作业",     "depth": 1, "role": "映射的作业"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "包括", "label": "信息系统", "direction": "in"},
+         {"rel": "承载", "label": "业务子项", "direction": "out"}]
+      ]
+    },
+    "作业": {
+      "propagate": [
+        {"rel": "上位", "direction": "out", "label": "业务子项", "depth": 1, "role": "上位业务子项"},
+        {"rel": "映射", "direction": "out", "label": "应用",     "depth": 1, "role": "映射的应用"},
+        {"rel": "映射", "direction": "in",  "label": "应用",     "depth": 1, "role": "映射的应用"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "上位", "label": "业务子项", "direction": "out"}]
+      ]
+    },
+    "主管部门": {
+      "propagate": [
+        {"rel": "执行", "direction": "out", "label": "业务子项",     "depth": 1, "role": "主管的业务子项"},
+        {"rel": "协同", "direction": "out", "label": "协同业务事项", "depth": 1, "role": "发起的协同"},
+        {"rel": "包括", "direction": "in",  "label": "海关部门",     "depth": 1, "role": "所属海关部门"}
+      ],
+      "compose": {"rel": "执行", "child": "业务子项"}
+    },
+    "海关部门": {
+      "propagate": [
+        {"rel": "包括", "direction": "out", "label": "主管部门", "depth": 1, "role": "下辖主管部门"}
+      ],
+      "compose": {"rel": "包括", "child": "主管部门"}
+    },
+    "角色岗位": {
+      "propagate": [
+        {"rel": "使用", "direction": "out", "label": "信息系统", "depth": 1, "role": "使用的信息系统"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "使用", "label": "信息系统", "direction": "out"},
+         {"rel": "承载", "label": "业务子项", "direction": "out"}]
+      ]
+    },
+    "对象": {
+      "propagate": [
+        {"rel": "隶属", "direction": "out", "label": "业务子项", "depth": 1, "role": "隶属的业务子项"},
+        {"rel": "下位", "direction": "out", "label": "子对象",   "depth": 1, "role": "包含子对象"},
+        {"rel": "权属", "direction": "out", "label": "相对人",   "depth": 1, "role": "服务对象"}
+      ],
+      "compose": {"rel": "下位", "child": "子对象"},
+      "rollup": [
+        [{"rel": "隶属", "label": "业务子项", "direction": "out"}]
+      ]
+    },
+    "子对象": {
+      "propagate": [
+        {"rel": "下位", "direction": "in", "label": "对象", "depth": 1, "role": "所属对象"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "下位", "label": "对象",     "direction": "in"},
+         {"rel": "隶属", "label": "业务子项", "direction": "out"}]
+      ]
+    },
+    "相对人": {
+      "propagate": [
+        {"rel": "权属", "direction": "in", "label": "对象", "depth": 1, "role": "被持有的对象"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "权属", "label": "对象",     "direction": "in"},
+         {"rel": "隶属", "label": "业务子项", "direction": "out"}]
+      ]
+    },
+    "协同业务事项": {
+      "propagate": [
+        {"rel": "协同", "direction": "in",  "label": "主管部门", "depth": 1, "role": "发起协同的部门"},
+        {"rel": "协同", "direction": "out", "label": "业务子项", "depth": 1, "role": "协同的业务子项"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "协同", "label": "业务子项", "direction": "out"}]
+      ]
+    },
+    "信息化需求": {
+      "propagate": [
+        {"rel": "包括", "direction": "in", "label": "业务事项", "depth": 1, "role": "所属业务事项"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "包括", "label": "业务事项", "direction": "in"}]
+      ]
+    },
+    "任务": {
+      "propagate": [
+        {"rel": "包括", "direction": "out", "label": "智慧海关任务", "depth": 1, "role": "涵盖的海关任务"},
+        {"rel": "包括", "direction": "out", "label": "业务事项",     "depth": 1, "role": "涵盖的业务事项"}
+      ],
+      "compose": {"rel": "包括", "child": "业务事项"}
+    },
+    "智慧海关任务": {
+      "propagate": [
+        {"rel": "包括", "direction": "in", "label": "任务", "depth": 1, "role": "所属任务"}
+      ],
+      "compose": null,
+      "rollup": [
+        [{"rel": "包括", "label": "任务", "direction": "in"}]
+      ]
+    }
+  },
+
+  "report_headers": {
+    "业务子项":     ["业务子项",   "关联类型", "关联对象",       "本次建议检查"],
+    "业务事项":     ["业务事项",   "业务子项", "业务作用",       "本次建议检查"],
+    "信息系统":     ["信息系统",   "承载的业务子项", "承载作用", "本次建议检查"],
+    "应用":         ["应用",       "所属信息系统", "映射作业",   "本次建议检查"],
+    "作业":         ["作业",       "上位业务子项", "映射应用",   "本次建议检查"],
+    "主管部门":     ["主管部门",   "业务子项", "部门职责",       "本次建议检查"],
+    "海关部门":     ["海关部门",   "主管部门", "下辖范围",       "本次建议检查"],
+    "角色岗位":     ["角色岗位",   "使用的系统", "办理业务",     "本次建议检查"],
+    "对象":         ["对象",       "隶属业务子项", "数据作用",   "本次建议检查"],
+    "子对象":       ["子对象",     "所属对象", "业务作用",       "本次建议检查"],
+    "相对人":       ["服务对象",   "持有对象", "业务作用",       "本次建议检查"],
+    "协同业务事项": ["协同业务",   "协同业务子项", "协同作用",   "本次建议检查"],
+    "信息化需求":   ["信息化需求", "所属业务事项", "需求作用",   "本次建议检查"],
+    "任务":         ["任务",       "涵盖范围", "任务作用",       "本次建议检查"],
+    "智慧海关任务": ["智慧海关任务", "所属任务", "任务作用",     "本次建议检查"]
+  },
+
+  "query_templates": [
+    {
+      "name": "按类型统计数量",
+      "pattern": "(有多少|多少个|多少条|多少项|几个|几种|几类|几项|几份|几条|总共|总数|统计).*?(?P<lbl>[^，。？?\\s]+)",
+      "cypher": "MATCH (n:`{lbl}`) RETURN count(n) AS c",
+      "label_from": "lbl"
+    },
+    {
+      "name": "按类型列清单",
+      "pattern": "(?P<lbl>[^，。？?\\s]+)(都)?有哪些",
+      "cypher": "MATCH (n:`{lbl}`) RETURN n.`{np}` AS name LIMIT 100",
+      "label_from": "lbl"
+    },
+    {
+      "name": "业务子项的承载系统",
+      "pattern": "(?P<kw>.+?)(的)?承载(在哪些|系统|信息系统)",
+      "cypher": "MATCH (s:`信息系统`)-[:`承载`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw OR x.`事项简要描述` CONTAINS $kw OR x.`id~` = $kw RETURN DISTINCT x.`名称` AS 业务子项, s.`名称` AS 承载系统 LIMIT 100"
+    },
+    {
+      "name": "信息系统承载的业务",
+      "pattern": "(系统|信息系统|平台)?\\s*(?P<kw>.+?)\\s*(承载|有哪些业务|承载哪些|支撑哪些)",
+      "cypher": "MATCH (s:`信息系统`)-[:`承载`]->(x:`业务子项`) WHERE s.`名称` CONTAINS $kw RETURN DISTINCT s.`名称` AS 信息系统, x.`名称` AS 业务子项 LIMIT 100"
+    },
+    {
+      "name": "业务子项的主管部门",
+      "pattern": "(?P<kw>.+?)(的)?(主管|执行|办理|负责)(部门|单位|司局|处室|科室)",
+      "cypher": "MATCH (d:`主管部门`)-[:`执行`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw OR x.`事项简要描述` CONTAINS $kw OR x.`id~` = $kw RETURN DISTINCT x.`名称` AS 业务子项, coalesce(d.`事项主管部门/处室`, d.`主办司局`) AS 主管部门 LIMIT 100"
+    },
+    {
+      "name": "部门主管的业务",
+      "pattern": "(部门|司局|主管部门|处室|科室)?\\s*(?P<kw>[^，。？?\\s]+?)\\s*(主管|执行|管|办理|负责)\\s*(的)?\\s*(哪些|什么|所有|全部)?\\s*(业务|事项|子项|工作)?",
+      "cypher": "MATCH (d:`主管部门`)-[:`执行`]->(x:`业务子项`) WHERE d.`事项主管部门/处室` CONTAINS $kw OR d.`主办司局` CONTAINS $kw OR d.`id~` = $kw RETURN DISTINCT coalesce(d.`事项主管部门/处室`, d.`主办司局`) AS 主管部门, x.`名称` AS 业务子项 LIMIT 100"
+    },
+    {
+      "name": "司局下辖部门",
+      "pattern": "(?P<kw>.+?)\\s*(司局|海关)?\\s*(下辖|包括|有哪些)\\s*(主管)?\\s*(部门|处室|科室)",
+      "cypher": "MATCH (h:`海关部门`)-[:`包括`]->(d:`主管部门`) WHERE h.`司局` CONTAINS $kw OR h.`id~` = $kw RETURN DISTINCT h.`司局` AS 海关部门, coalesce(d.`事项主管部门/处室`, d.`主办司局`) AS 主管部门 LIMIT 100"
+    },
+    {
+      "name": "各部门主管业务统计",
+      "pattern": "(各|所有|每个)(部门|司局|主管部门|处室)\\s*(各自)?\\s*(主管|负责|管|办理)\\s*(多少|几个|几条|的数量|统计)?",
+      "cypher": "MATCH (d:`主管部门`)-[:`执行`]->(x:`业务子项`) RETURN coalesce(d.`事项主管部门/处室`, d.`主办司局`) AS 主管部门, count(DISTINCT x) AS 业务数量 ORDER BY 业务数量 DESC LIMIT 100"
+    },
+    {
+      "name": "各系统承载业务统计",
+      "pattern": "(各|所有|每个)(系统|信息系统|平台)\\s*(各自)?\\s*(承载|支撑)\\s*(多少|几个|几条|的数量)?",
+      "cypher": "MATCH (s:`信息系统`)-[:`承载`]->(x:`业务子项`) RETURN s.`名称` AS 信息系统, count(DISTINCT x) AS 业务数量 ORDER BY 业务数量 DESC LIMIT 100"
+    },
+    {
+      "name": "各业务事项的子项统计",
+      "pattern": "(各|所有|每个)(业务事项|事项)\\s*(各自)?\\s*(包括|包含|有)\\s*(多少|几个|几条|的数量)?",
+      "cypher": "MATCH (e:`业务事项`)-[:`包括`]->(x:`业务子项`) RETURN e.`名称` AS 业务事项, count(DISTINCT x) AS 子项数量 ORDER BY 子项数量 DESC LIMIT 100"
+    },
+    {
+      "name": "业务子项的角色岗位",
+      "pattern": "(?P<kw>.+?)(涉及|使用|用到)?(的)?(角色|岗位|角色岗位)",
+      "cypher": "MATCH (r:`角色岗位`)-[:`使用`]->(s:`信息系统`)-[:`承载`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw OR x.`事项简要描述` CONTAINS $kw OR x.`id~` = $kw RETURN DISTINCT x.`名称` AS 业务子项, s.`名称` AS 信息系统, r.`名称` AS 角色岗位 LIMIT 100"
+    },
+    {
+      "name": "岗位使用的系统",
+      "pattern": "(岗位|角色|角色岗位)?\\s*(?P<kw>.+?)\\s*(使用|用了|用的|有哪些)\\s*(的)?(系统|信息系统|平台)",
+      "cypher": "MATCH (r:`角色岗位`)-[:`使用`]->(s:`信息系统`) WHERE r.`名称` CONTAINS $kw OR r.`id~` = $kw RETURN DISTINCT r.`名称` AS 角色岗位, s.`名称` AS 信息系统 LIMIT 100"
+    },
+    {
+      "name": "业务子项的关联对象",
+      "pattern": "(?P<kw>.+?)(关联|使用|涉及|用到)\\s*(哪些|的)?\\s*(对象|数据对象|业务对象|证照|证件|证书|单证)",
+      "cypher": "MATCH (o:`对象`)-[:`隶属`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw OR x.`事项简要描述` CONTAINS $kw OR x.`id~` = $kw RETURN DISTINCT x.`名称` AS 业务子项, o.`名称` AS 对象 LIMIT 100"
+    },
+    {
+      "name": "对象的业务范围",
+      "pattern": "(对象|证照|证件|证书|单证)?\\s*(?P<kw>.+?)\\s*(用在|隶属|涉及|关联)\\s*(哪些|的)?\\s*(业务|子项|事项)?",
+      "cypher": "MATCH (o:`对象`)-[:`隶属`]->(x:`业务子项`) WHERE o.`名称` CONTAINS $kw OR o.`id~` = $kw RETURN DISTINCT o.`名称` AS 对象, x.`名称` AS 业务子项 LIMIT 100"
+    },
+    {
+      "name": "对象的服务对象",
+      "pattern": "(?P<kw>.+?)\\s*(的)?(服务对象|相对人|办理人|面向)",
+      "cypher": "MATCH (o:`对象`)-[:`权属`]->(p:`相对人`) WHERE o.`名称` CONTAINS $kw OR o.`id~` = $kw RETURN DISTINCT o.`名称` AS 对象, p.`服务对象` AS 服务对象 LIMIT 100"
+    },
+    {
+      "name": "相对人持有的对象",
+      "pattern": "(相对人|服务对象|办理人|办事人)?\\s*(?P<kw>.+?)\\s*(持有|关联|涉及|拥有)\\s*(的)?(对象|证照|证件)",
+      "cypher": "MATCH (o:`对象`)-[:`权属`]->(p:`相对人`) WHERE p.`服务对象` CONTAINS $kw OR p.`id~` = $kw RETURN DISTINCT p.`服务对象` AS 服务对象, o.`名称` AS 对象 LIMIT 100"
+    },
+    {
+      "name": "业务子项的上位作业",
+      "pattern": "(?P<kw>.+?)(对应|有哪些|关联|涉及)?(的)?(作业|功能|功能模块|流程节点)",
+      "cypher": "MATCH (w:`作业`)-[:`上位`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw OR x.`事项简要描述` CONTAINS $kw OR x.`id~` = $kw RETURN DISTINCT x.`名称` AS 业务子项, w.`功能模块名称` AS 作业 LIMIT 100"
+    },
+    {
+      "name": "业务子项的协同事项",
+      "pattern": "(?P<kw>.+?)(的)?(协同|协同事项|协同业务)",
+      "cypher": "MATCH (c:`协同业务事项`)-[:`协同`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw OR x.`事项简要描述` CONTAINS $kw OR x.`id~` = $kw RETURN DISTINCT x.`名称` AS 业务子项, c.`协同业务名称` AS 协同业务 LIMIT 100"
+    },
+    {
+      "name": "业务事项的子项",
+      "pattern": "(事项|业务事项)?\\s*(?P<kw>.+?)\\s*(包括|包含|有哪些|的|下的)\\s*(子项|业务子项|子事项|环节)",
+      "cypher": "MATCH (e:`业务事项`)-[:`包括`]->(x:`业务子项`) WHERE e.`名称` CONTAINS $kw OR e.`业务编号` CONTAINS $kw OR e.`id~` = $kw RETURN DISTINCT e.`名称` AS 业务事项, x.`名称` AS 业务子项 LIMIT 100"
+    },
+    {
+      "name": "业务子项所属事项",
+      "pattern": "(?P<kw>.+?)\\s*(属于|所属|归属|是)\\s*(哪个|哪一个|什么)?(业务事项|事项|业务)",
+      "cypher": "MATCH (e:`业务事项`)-[:`包括`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw OR x.`事项简要描述` CONTAINS $kw OR x.`id~` = $kw RETURN DISTINCT x.`名称` AS 业务子项, e.`名称` AS 业务事项 LIMIT 100"
+    },
+    {
+      "name": "信息系统的应用",
+      "pattern": "(系统|信息系统|平台)?\\s*(?P<kw>.+?)\\s*(包括|包含|有哪些|下的)\\s*(的)?(应用)",
+      "cypher": "MATCH (s:`信息系统`)-[:`包括`]->(a:`应用`) WHERE s.`名称` CONTAINS $kw OR s.`id~` = $kw RETURN DISTINCT s.`名称` AS 信息系统, a.`应用名称` AS 应用 LIMIT 100"
+    },
+    {
+      "name": "按业务编号查询",
+      "pattern": "(业务编号|编号)\\s*(是|为|=)?\\s*(?P<kw>[A-Za-z0-9\\-]+)",
+      "cypher": "MATCH (e:`业务事项`) WHERE e.`业务编号` = $kw OR e.`业务编号` CONTAINS $kw RETURN e.`名称` AS 业务事项, e.`业务编号` AS 业务编号, e.`id~` AS id LIMIT 100"
+    },
+    {
+      "name": "按司局筛选业务",
+      "pattern": "(司局|业务司)\\s*(是|为|=)?\\s*(?P<kw>[^，。？?\\s]+?)\\s*(的)?(业务|事项|子项)",
+      "cypher": "MATCH (x:`业务子项`) WHERE x.`司局` CONTAINS $kw RETURN DISTINCT x.`名称` AS 业务子项, x.`司局` AS 司局 LIMIT 100"
+    },
+    {
+      "name": "两实体最短路径",
+      "pattern": "(?P<a>.+?)\\s*(和|与)\\s*(?P<b>.+?)\\s*(是什么关系|什么关系|怎么关联|有没有关系)",
+      "cypher": "MATCH (x), (y) WHERE (x.`名称` CONTAINS $a OR x.`应用名称` CONTAINS $a OR x.`功能模块名称` CONTAINS $a OR x.`主办司局` CONTAINS $a OR x.`事项主管部门/处室` CONTAINS $a OR x.`司局` CONTAINS $a OR x.`服务对象` CONTAINS $a OR x.`协同业务名称` CONTAINS $a OR x.`任务名称(节点名称)` CONTAINS $a) AND (y.`名称` CONTAINS $b OR y.`应用名称` CONTAINS $b OR y.`功能模块名称` CONTAINS $b OR y.`主办司局` CONTAINS $b OR y.`事项主管部门/处室` CONTAINS $b OR y.`司局` CONTAINS $b OR y.`服务对象` CONTAINS $b OR y.`协同业务名称` CONTAINS $b OR y.`任务名称(节点名称)` CONTAINS $b) WITH x, y LIMIT 10 MATCH p = shortestPath((x)-[*..6]-(y)) RETURN labels(x)[0] AS a_type, coalesce(x.`名称`,x.`应用名称`,x.`功能模块名称`,x.`主办司局`,x.`事项主管部门/处室`,x.`司局`,x.`服务对象`,x.`协同业务名称`,x.`任务名称(节点名称)`,'') AS a_name, [r IN relationships(p) | type(r)] AS rels, labels(y)[0] AS b_type, coalesce(y.`名称`,y.`应用名称`,y.`功能模块名称`,y.`主办司局`,y.`事项主管部门/处室`,y.`司局`,y.`服务对象`,y.`协同业务名称`,y.`任务名称(节点名称)`,'') AS b_name LIMIT 10"
+    }
+  ],
+
+  "display_notes": "展示业务子项按『名称』；展示相对人用『服务对象』；展示主管部门优先用『事项主管部门/处室』（真实处室名），回退『主办司局』（上级司局）；展示海关部门用『司局』；展示作业用『功能模块名称』；展示协同业务事项用『协同业务名称』；展示任务/智慧海关任务用『任务名称(节点名称)』；展示应用用『应用名称』。多候选场景展示顺序必须与 state.candidates 数组顺序一致。关于『主管部门』：『主办司局』字段里存的是上级司局名（如『业务司』），『事项主管部门/处室』才是真正的处室名（如『综合司-运行处』），当用户问具体处室名时必须命中后者。",
+
+  "business_search": [
+    {"label": "业务子项",     "id_prop": "id~", "name_prop": "名称",                "search_props": ["名称", "事项简要描述", "所需业务数据", "产生业务数据"]},
+    {"label": "业务事项",     "id_prop": "id~", "name_prop": "名称",                "search_props": ["名称", "业务编号", "业务线/业务类型"]},
+    {"label": "信息系统",     "id_prop": "id~", "name_prop": "名称",                "search_props": ["名称"]},
+    {"label": "应用",         "id_prop": "id~", "name_prop": "应用名称",            "search_props": ["应用名称", "应用名称全路径", "应用编号"]},
+    {"label": "作业",         "id_prop": "id~", "name_prop": "功能模块名称",        "search_props": ["功能模块名称", "流程/数据节点名称", "功能模块描述"]},
+    {"label": "主管部门",     "id_prop": "id~", "name_prop": "事项主管部门/处室",   "search_props": ["事项主管部门/处室", "主办司局"]},
+    {"label": "海关部门",     "id_prop": "id~", "name_prop": "司局",                "search_props": ["司局"]},
+    {"label": "角色岗位",     "id_prop": "id~", "name_prop": "名称",                "search_props": ["名称", "司局"]},
+    {"label": "对象",         "id_prop": "id~", "name_prop": "名称",                "search_props": ["名称", "司局"]},
+    {"label": "子对象",       "id_prop": "id~", "name_prop": "名称",                "search_props": ["名称", "司局"]},
+    {"label": "相对人",       "id_prop": "id~", "name_prop": "服务对象",            "search_props": ["服务对象"]},
+    {"label": "协同业务事项", "id_prop": "id~", "name_prop": "协同业务名称",        "search_props": ["协同业务名称", "协同业务部门", "业务协同关系"]},
+    {"label": "信息化需求",   "id_prop": "id~", "name_prop": "名称",                "search_props": ["名称", "需求描述", "需求编号", "需求分类"]},
+    {"label": "任务",         "id_prop": "id~", "name_prop": "任务名称(节点名称)",  "search_props": ["任务名称(节点名称)", "智慧海关任务编号"]},
+    {"label": "智慧海关任务", "id_prop": "id~", "name_prop": "任务名称(节点名称)",  "search_props": ["任务名称(节点名称)", "智慧海关任务编号", "任务描述", "任务类型"]}
+  ],
+
+  "query_examples": [
+    "MATCH (s:`信息系统`)-[:`承载`]->(x:`业务子项`) WHERE x.`名称` CONTAINS $kw RETURN s.`名称`, x.`名称` LIMIT 100",
+    "MATCH (d:`主管部门`)-[:`执行`]->(x:`业务子项`) WHERE d.`事项主管部门/处室` CONTAINS $kw OR d.`主办司局` CONTAINS $kw RETURN coalesce(d.`事项主管部门/处室`, d.`主办司局`) AS 主管部门, x.`名称` LIMIT 100",
+    "MATCH (d:`主管部门`)-[:`执行`]->(x:`业务子项`) RETURN coalesce(d.`事项主管部门/处室`, d.`主办司局`) AS 主管部门, count(DISTINCT x) AS 业务数量 ORDER BY 业务数量 DESC LIMIT 100",
+    "MATCH (r:`角色岗位`)-[:`使用`]->(s:`信息系统`) RETURN r.`名称`, s.`名称` LIMIT 100",
+    "MATCH (o:`对象`)-[:`隶属`]->(x:`业务子项`) WHERE o.`名称` CONTAINS $kw RETURN o.`名称`, x.`名称` LIMIT 100",
+    "MATCH (o:`对象`)-[:`权属`]->(p:`相对人`) WHERE o.`名称` CONTAINS $kw RETURN o.`名称`, p.`服务对象` LIMIT 100",
+    "MATCH (w:`作业`)-[:`上位`]->(x:`业务子项`) WHERE w.`功能模块名称` CONTAINS $kw RETURN w.`功能模块名称`, x.`名称` LIMIT 100",
+    "MATCH (c:`协同业务事项`)-[:`协同`]->(x:`业务子项`) RETURN c.`协同业务名称`, x.`名称` LIMIT 100",
+    "MATCH (e:`业务事项`)-[:`包括`]->(x:`业务子项`) WHERE e.`名称` CONTAINS $kw OR e.`业务编号` CONTAINS $kw RETURN e.`名称`, e.`业务编号`, x.`名称` LIMIT 100",
+    "MATCH (s:`信息系统`)-[:`包括`]->(a:`应用`) WHERE s.`名称` CONTAINS $kw RETURN s.`名称`, a.`应用名称` LIMIT 100",
+    "MATCH (h:`海关部门`)-[:`包括`]->(d:`主管部门`) WHERE h.`司局` CONTAINS $kw RETURN h.`司局`, coalesce(d.`事项主管部门/处室`, d.`主办司局`) AS 主管部门 LIMIT 100",
+    "MATCH (t:`任务`)-[:`包括`]->(th:`智慧海关任务`) RETURN t.`任务名称(节点名称)`, th.`任务名称(节点名称)` LIMIT 100"
+  ]
+}

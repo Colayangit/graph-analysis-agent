@@ -1,0 +1,24 @@
+# 运行数据（含用户会话，不入库）
+orchestrator2.0/history.db
+orchestrator2.0/history.db-journal
+# 运行时配置（含真实凭据，不入库；首次部署复制 runtime_config.json.example 并填入真实值）
+orchestrator2.0/runtime_config.json
+# 换图绑定生成的图专属配置骨架（各环境自行生成）
+orchestrator2.0/schema_notes.*.json
+!orchestrator2.0/schema_notes.json
+# 已校对过的海关业务底账-0109_1 图专属配置破例入库
+!orchestrator2.0/schema_notes.海关业务底账-0109_1.json
+# 真实业务数据（含 csv/mapping/probe 脚本），不入公网仓库
+数据.rar
+数据_extracted/
+# 本地开发辅助/审计文件
+AUDIT.md
+PLAN.md
+.claude/
+/tmp/
+# 前端备份目录（历史版本，不入库）
+orchestrator2.0/backup_frontend_v11/
+# Python
+__pycache__/
+*.pyc
+*.pyo

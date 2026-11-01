@@ -1,0 +1,245 @@
+/* 图谱工作台：浅灰紫底 + 白色圆角面板 + 12px 间距分层
+   （左：页签面板｜中：图谱面板｜右：表格抽屉） */
+
+#workspace {
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 60;
+  background: #F5F5FA; display: flex; flex-direction: column;
+}
+#workspace.hidden { display: none; }
+#workspace .hidden { display: none !important; }
+
+/* ---- 全局导航条 ---- */
+.ws-head {
+  display: flex; align-items: center; gap: 10px; flex: none;
+  padding: 10px 16px;
+}
+.ws-head b { font-size: 15px; }
+#ws-close { margin-left: auto;
+  border: 1px solid rgba(139, 92, 246, .32);
+  background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+  color: #4c54c4; font-size: 12px; font-weight: 600;
+  border-radius: 8px; padding: 6px 14px; cursor: pointer;
+}
+#ws-close:hover { background: linear-gradient(135deg, #e0e7ff, #ede9fe); }
+
+/* ---- 主体：面板布局（四周留白 + 面板间距） ---- */
+.ws-body {
+  flex: 1; min-height: 0; display: flex; gap: 12px;
+  padding: 4px 14px 14px;
+}
+
+/* ---- 左：页签面板 ---- */
+.ws-left {
+  width: 300px; flex: none;
+  background: #fff; border: 1px solid #DDDDEA; border-radius: 10px;
+  display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(24, 32, 72, .04);
+}
+.ws-tabs { display: flex; border-bottom: 1px solid #ECEAF4; flex: none; }
+.ws-tabs button {
+  flex: 1; border: none; background: none; padding: 11px 0 9px;
+  font-size: 13px; color: #5b6178; cursor: pointer;
+  border-bottom: 2px solid transparent; letter-spacing: .5px;
+}
+.ws-tabs button.on {
+  color: var(--primary, #6366f1); font-weight: 650;
+  border-bottom-color: var(--primary, #6366f1);
+}
+.ws-tabpage { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 12px; }
+#ws-tab-adv { overflow-y: auto; }
+.ws-cands-title {
+  flex: none; font-size: 11.5px; color: var(--text-sub, #888);
+  margin: 10px 2px 6px; letter-spacing: 1px;
+}
+.ws-adv-label { font-size: 12px; font-weight: 600; color: var(--text-sub, #666); margin-bottom: 6px; }
+
+.ws-search-row { display: flex; gap: 6px; flex: none; }
+#ws-kw {
+  flex: 1; min-width: 0; border: 1px solid #dcdae6; border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; outline: none; background: #fff;
+}
+#ws-kw:focus { border-color: var(--primary, #6366f1); }
+#ws-search-btn, #ws-run, #ws-gen-btn {
+  border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer;
+  background: var(--primary-grad, #6366f1); color: #fff; white-space: nowrap;
+}
+#ws-search-btn:active, #ws-run:active, #ws-gen-btn:active { opacity: .85; }
+#ws-gen-btn:disabled { opacity: .55; cursor: wait; }
+#ws-cands { flex: 1; min-height: 0; overflow-y: auto; }
+.ws-cand {
+  padding: 8px 10px; border: 1px solid #eceaf4; border-radius: 8px;
+  margin-bottom: 6px; cursor: pointer; font-size: 12px; line-height: 1.5; background: #fff;
+}
+.ws-cand:hover { border-color: var(--primary, #6366f1); background: #f7f7ff; }
+.ws-cand .cname { font-size: 13px; font-weight: 600; color: var(--text, #222); }
+.ws-cand .ctype { color: var(--primary, #6366f1); margin-right: 4px; }
+.ws-cand .cmeta { color: var(--text-sub, #888); word-break: break-all; }
+.ws-loading { color: var(--text-sub, #888); font-size: 12px; padding: 6px 2px; }
+
+#ws-cypher-input, #ws-gen-input {
+  width: 100%; border: 1px solid #dcdae6; border-radius: 8px;
+  padding: 8px 10px; font: 12px/1.5 Consolas, Menlo, monospace; outline: none;
+  box-sizing: border-box; resize: vertical; background: #fff;
+}
+#ws-gen-input { font-family: inherit; }
+#ws-cypher-input:focus, #ws-gen-input:focus { border-color: var(--primary, #6366f1); }
+#ws-gen-out {
+  margin-top: 8px; background: #151827; color: #dbe2f4; border-radius: 8px;
+  padding: 9px 11px; font: 11px/1.7 Consolas, Menlo, monospace;
+  overflow-x: auto; white-space: pre-wrap; word-break: break-all;
+}
+.ws-gen-actions { margin-top: 6px; display: flex; gap: 6px; }
+#ws-gen-copy {
+  border: 1px solid #c7d2fe; background: #f5f6ff; color: #4c54c4;
+  border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer;
+}
+#ws-gen-copy:hover { background: #e8ebff; }
+
+/* ---- 中：图谱面板 ---- */
+.ws-graph-panel {
+  flex: 1; min-width: 0;
+  background: #fff; border: 1px solid #DDDDEA; border-radius: 10px;
+  display: flex; flex-direction: column; min-height: 0;
+  position: relative; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(24, 32, 72, .04);
+}
+.ws-graph-bar {
+  flex: none; min-height: 52px; display: flex; align-items: center;
+  justify-content: space-between; gap: 10px;
+  padding: 6px 14px; border-bottom: 1px solid #EEEf5;
+}
+.ws-graph-title .t1 { font-size: 13.5px; font-weight: 650; }
+.ws-graph-title .t1 #ws-entity-name { color: var(--primary, #6366f1); }
+.ws-graph-title .t2 { font-size: 11px; color: #9aa1b6; margin-top: 2px; }
+.ws-graph-tools { display: flex; gap: 6px; flex: none; }
+.ws-graph-tools button {
+  border: 1px solid #DDDDEA; background: #fff; color: var(--text, #333);
+  border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer;
+}
+.ws-graph-tools button:hover:not(:disabled) {
+  border-color: var(--primary, #6366f1); color: var(--primary, #6366f1);
+}
+.ws-graph-tools button:disabled { opacity: .45; cursor: default; }
+#ws-help-btn { width: 30px; padding: 5px 0; font-weight: 700; }
+.ws-canvas-wrap { flex: 1; min-height: 0; position: relative; }
+#ws-chart { position: absolute; inset: 0; overflow: hidden; }
+
+/* 浮动图例（工具栏下方左上角，可折叠、可点击筛选） */
+#ws-legend {
+  position: absolute; left: 10px; top: 10px; z-index: 6;
+  background: rgba(255, 255, 255, .92); border: 1px solid #DDDDEA;
+  border-radius: 10px; box-shadow: 0 4px 14px rgba(24, 32, 72, .08);
+  padding: 5px 8px; max-width: 250px;
+}
+.ws-lg-head {
+  font-size: 11px; color: #888; display: flex; justify-content: space-between;
+  gap: 12px; padding: 2px 4px; user-select: none;
+}
+#ws-lg-toggle { color: var(--primary, #6366f1); cursor: pointer; }
+.ws-lg-body { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; padding: 3px 2px 2px; }
+.ws-lg-body.hidden { display: none; }
+.ws-lg-chip {
+  display: flex; align-items: center; gap: 5px; border: none; background: none;
+  font-size: 11px; color: #444; cursor: pointer; padding: 3px 4px; border-radius: 6px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 112px;
+  text-align: left;
+}
+.ws-lg-chip:hover { background: rgba(99, 102, 241, .07); }
+.ws-lg-chip i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.ws-lg-chip.off { opacity: .38; text-decoration: line-through; }
+
+/* 右下角缩放工具 */
+.ws-zoom-tools {
+  position: absolute; right: 12px; bottom: 12px; z-index: 6;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.ws-zoom-tools button {
+  width: 30px; height: 30px; border: 1px solid #DDDDEA;
+  background: rgba(255, 255, 255, .95); border-radius: 8px; cursor: pointer;
+  font-size: 14px; color: #555; box-shadow: 0 2px 8px rgba(24, 32, 72, .06);
+}
+.ws-zoom-tools button:hover { border-color: var(--primary, #6366f1); color: var(--primary, #6366f1); }
+
+/* 帮助说明浮层 */
+#ws-help-pop {
+  position: absolute; top: 58px; right: 12px; z-index: 8;
+  background: #fff; border: 1px solid #DDDDEA; border-radius: 10px;
+  padding: 10px 14px; font-size: 12px; color: #555; line-height: 2;
+  box-shadow: 0 6px 20px rgba(24, 32, 72, .12); max-width: 300px;
+}
+
+/* 提示 toast（画布底部居中，自动消失，不再是常驻黄条） */
+#ws-trunc {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 14px; z-index: 7;
+  background: rgba(30, 36, 60, .85); color: #fff; border-radius: 8px;
+  padding: 6px 16px; font-size: 12px; max-width: 72%;
+  box-shadow: 0 4px 14px rgba(24, 32, 72, .22);
+}
+#ws-trunc.ws-err { background: rgba(180, 35, 24, .92); }
+
+/* ---- 右：表格抽屉 ---- */
+#ws-table-wrap {
+  width: 480px; flex: none;
+  background: #fff; border: 1px solid #DDDDEA; border-radius: 10px;
+  display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(24, 32, 72, .04);
+}
+.ws-table-head {
+  flex: none; display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--text-sub, #666);
+  border-bottom: 1px solid #EEEf5;
+}
+.ws-icon-btn {
+  border: none; background: transparent; cursor: pointer; font-size: 15px;
+  color: var(--text-sub, #666); padding: 4px 10px; border-radius: 6px;
+}
+.ws-icon-btn:hover { background: #eef0f7; }
+#ws-table { flex: 1; overflow: auto; padding: 8px 12px; }
+#ws-table table { border-collapse: collapse; font-size: 12px; width: 100%; }
+#ws-table th, #ws-table td {
+  border: 1px solid #ececf2; padding: 4px 8px; text-align: left; max-width: 260px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+#ws-table th { background: #f6f7fb; position: sticky; top: 0; z-index: 1; }
+.ws-table-page {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 8px 0 2px; font-size: 12px; color: var(--text-sub, #666);
+}
+.ws-table-page button {
+  border: 1px solid #dcdae6; background: #fff; color: var(--text, #333);
+  border-radius: 7px; padding: 3px 10px; font-size: 12px; cursor: pointer;
+}
+.ws-table-page button:hover:not(:disabled) { border-color: var(--primary, #6366f1); color: var(--primary, #6366f1); }
+.ws-table-page button:disabled { opacity: .4; cursor: default; }
+
+/* ---- 节点属性浮层（画布区左上，位于图例右侧） ---- */
+#ws-props {
+  position: absolute; left: 348px; top: 76px; width: 330px;
+  max-height: 70%; overflow: auto;
+  background: #fff; border: 1px solid #DDDDEA; border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(24, 32, 72, .14);
+  padding: 10px 12px; z-index: 9;
+}
+#ws-props h5 { font-size: 13px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+#ws-props h5 button { border: none; background: none; cursor: pointer; color: #999; font-size: 13px; }
+#ws-props table { border-collapse: collapse; font-size: 12px; width: 100%; }
+#ws-props td { border-bottom: 1px solid #f0f0f5; padding: 4px 6px; vertical-align: top; }
+#ws-props td.k { color: var(--text-sub, #888); white-space: nowrap; width: 84px; }
+#ws-props td.v { word-break: break-all; }
+
+/* 属性面板：以此业务继续分析 */
+.ws-analyze-actions { margin-top: 8px; }
+.ws-continue-btn {
+  width: 100%; border: 1px solid #c7d2fe; border-radius: 8px;
+  padding: 8px 0; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  color: #4c54c4; background: #f5f6ff;
+}
+.ws-continue-btn:hover { background: #e8ebff; }
+
+/* 聊天气泡里的"展开图谱"卡片（在消息操作行内，与其他按钮同行） */
+.graph-card {
+  display: inline-block; padding: 5px 14px;
+  border: 1px solid #c7d2fe; border-radius: 10px; background: #eef2ff;
+  color: var(--primary, #6366f1); font-size: 13px; cursor: pointer;
+}
+.graph-card:hover { background: #e0e7ff; }

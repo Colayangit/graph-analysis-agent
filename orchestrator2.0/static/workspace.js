@@ -571,8 +571,53 @@
       }).catch(function () {});
   }
 
+  // ---------------- 详情面板拖拽（画布内自由挪位） ----------------
+  function initPropsDrag() {
+    var box = $('ws-props');
+    if (!box) return;
+    var dragging = false, startX = 0, startY = 0, baseLeft = 0, baseTop = 0;
+    box.addEventListener('mousedown', function (e) {
+      // 只在 h5 标题栏上触发；按钮/输入/表格区不响应
+      var h = box.querySelector('h5');
+      if (!h || !h.contains(e.target)) return;
+      if (e.target.tagName === 'BUTTON') return;
+      dragging = true;
+      box.classList.add('ws-dragging');
+      startX = e.clientX; startY = e.clientY;
+      var rect = box.getBoundingClientRect();
+      var parent = box.offsetParent || document.body;
+      var pRect = parent.getBoundingClientRect();
+      baseLeft = rect.left - pRect.left;
+      baseTop = rect.top - pRect.top;
+      // 一旦开始拖，就改用绝对定位（去掉默认 right/bottom 之类）
+      box.style.left = baseLeft + 'px';
+      box.style.top = baseTop + 'px';
+      box.style.right = 'auto';
+      box.style.bottom = 'auto';
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      var parent = box.offsetParent || document.body;
+      var pRect = parent.getBoundingClientRect();
+      var w = box.offsetWidth, h = box.offsetHeight;
+      // 约束在父容器内（留 4px 边距）
+      var nx = Math.max(4, Math.min(pRect.width - w - 4, baseLeft + dx));
+      var ny = Math.max(4, Math.min(pRect.height - h - 4, baseTop + dy));
+      box.style.left = nx + 'px';
+      box.style.top = ny + 'px';
+    });
+    document.addEventListener('mouseup', function () {
+      if (!dragging) return;
+      dragging = false;
+      box.classList.remove('ws-dragging');
+    });
+  }
+
   // ---------------- 事件绑定 ----------------
   document.addEventListener('DOMContentLoaded', function () {
+    initPropsDrag();
     $('ws-close').addEventListener('click', close);
     $('ws-table-btn').addEventListener('click', function () {
       if ($('ws-table-wrap').classList.contains('hidden')) showTable(); else hideTable();

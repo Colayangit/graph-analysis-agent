@@ -124,9 +124,9 @@
 .ws-canvas-wrap { flex: 1; min-height: 0; position: relative; }
 #ws-chart { position: absolute; inset: 0; overflow: hidden; }
 
-/* 浮动图例（工具栏下方左上角，可折叠、可点击筛选） */
+/* 浮动图例（画布左下角，可折叠、可点击筛选） */
 #ws-legend {
-  position: absolute; left: 10px; top: 10px; z-index: 6;
+  position: absolute; left: 10px; bottom: 10px; z-index: 6;
   background: rgba(255, 255, 255, .92); border: 1px solid #DDDDEA;
   border-radius: 10px; box-shadow: 0 4px 14px rgba(24, 32, 72, .08);
   padding: 5px 8px; max-width: 250px;
@@ -212,16 +212,26 @@
 .ws-table-page button:hover:not(:disabled) { border-color: var(--primary, #6366f1); color: var(--primary, #6366f1); }
 .ws-table-page button:disabled { opacity: .4; cursor: default; }
 
-/* ---- 节点属性浮层（画布区左上，位于图例右侧） ---- */
+/* ---- 节点属性浮层（画布内可拖拽，默认位于左上） ---- */
 #ws-props {
   position: absolute; left: 348px; top: 76px; width: 330px;
   max-height: 70%; overflow: auto;
   background: #fff; border: 1px solid #DDDDEA; border-radius: 10px;
   box-shadow: 0 8px 24px rgba(24, 32, 72, .14);
   padding: 10px 12px; z-index: 9;
+  user-select: none;
 }
-#ws-props h5 { font-size: 13px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+#ws-props.ws-dragging { box-shadow: 0 12px 32px rgba(24, 32, 72, .25); opacity: .96; }
+#ws-props h5 {
+  font-size: 13px; margin-bottom: 6px; display: flex; justify-content: space-between;
+  cursor: move; padding-bottom: 4px; border-bottom: 1px dashed #ececf2;
+}
+#ws-props h5::before {
+  content: '⋮⋮'; color: #c7c9d6; font-size: 14px; margin-right: 6px;
+  letter-spacing: -2px; flex: none;
+}
 #ws-props h5 button { border: none; background: none; cursor: pointer; color: #999; font-size: 13px; }
+#ws-props table, #ws-props .ws-analyze-actions, #ws-props > div { cursor: default; user-select: text; }
 #ws-props table { border-collapse: collapse; font-size: 12px; width: 100%; }
 #ws-props td { border-bottom: 1px solid #f0f0f5; padding: 4px 6px; vertical-align: top; }
 #ws-props td.k { color: var(--text-sub, #888); white-space: nowrap; width: 84px; }

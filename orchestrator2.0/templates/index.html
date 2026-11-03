@@ -170,8 +170,10 @@
     position: fixed; inset: 0; z-index: 100; background: rgba(13,16,32,.55);
     backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
   }
-  .modal-mask.hidden { display: none; }
+    .modal-mask.hidden { display: none; }
+  .hidden { display: none !important; }
   .modal {
+
     width: 460px; max-width: calc(100vw - 40px); max-height: 86vh; overflow-y: auto;
     background: #fff; border-radius: 16px; padding: 22px 24px;
     box-shadow: 0 24px 64px rgba(24,32,72,.25);
@@ -192,8 +194,25 @@
   }
   #settings-save { background: var(--primary-grad); color: #fff; }
   #settings-cancel { background: #f1f2f8; color: #5b6178; }
-  .cfg-tip { font-size: 11.5px; color: #9aa1b6; margin-top: 6px; }
+    .cfg-tip { font-size: 11.5px; color: #9aa1b6; margin-top: 6px; }
+
+  .settings-tabs {
+    margin-top: 12px; display: inline-flex; gap: 6px; padding: 4px;
+    background: #f3f4fd; border-radius: 10px;
+  }
+  .settings-tab-btn {
+    border: none; background: transparent; color: #5b6178;
+    border-radius: 8px; padding: 6px 12px; font-size: 12.5px;
+    font-weight: 600; cursor: pointer;
+  }
+  .settings-tab-btn:hover { color: #4c54c4; }
+  .settings-tab-btn.on {
+    background: #fff; color: #4c54c4;
+    box-shadow: 0 2px 8px rgba(76,84,196,.16);
+  }
+  .settings-tab-pane { margin-top: 12px; }
   .test-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
   .test-btn { border: 1px solid #c9cdf3; background: #f3f4fd; color: #4c54c4;
     border-radius: 8px; padding: 6px 14px; font-size: 12.5px; font-weight: 600;
     cursor: pointer; white-space: nowrap; }
@@ -540,9 +559,17 @@
 
 <div id="settings-modal" class="modal-mask hidden">
   <div class="modal">
-    <h3>系统配置</h3>
+        <h3>系统配置</h3>
     <div class="cfg-tip">保存后实时生效，无需重启；密码留空表示不修改</div>
-    <h4>图数据库（Galaxybase）</h4>
+
+    <div class="settings-tabs" role="tablist" aria-label="系统配置分组">
+      <button type="button" class="settings-tab-btn on" data-settings-tab="graph">图数据库（Galaxybase）</button>
+      <button type="button" class="settings-tab-btn" data-settings-tab="llm">LLM 算力平台配置</button>
+    </div>
+
+    <div id="settings-tab-graph" class="settings-tab-pane">
+      <h4>图数据库（Galaxybase）</h4>
+
     <div class="fg"><label>服务地址</label><input id="cfg-galaxy-base" placeholder="http://IP:18088"></div>
     <div class="fg"><label>账号</label><input id="cfg-galaxy-user" placeholder="admin"></div>
     <div class="fg"><label>密码</label><input id="cfg-galaxy-pass" type="password" placeholder="留空不修改"></div>
@@ -604,7 +631,12 @@
       <span class="sn-save-msg" id="sn-save-msg">改完点保存即时生效，无需重启服务</span>
     </div>
 
-    <h4>LLM 算力平台</h4>
+    </div>
+
+    <div id="settings-tab-llm" class="settings-tab-pane hidden">
+
+      <h4>LLM 算力平台</h4>
+
     <div class="fg"><label>平台</label>
       <select id="cfg-llm-platform">
         <option value="dify">本地测试平台</option>
@@ -622,8 +654,12 @@
         <button type="button" class="test-btn" id="test-llm-btn">测试平台连接</button>
         <span class="test-msg" id="test-llm-msg">按当前表单值测试（无需先保存）</span>
       </div>
+        </div>
     </div>
+
     <div class="actions">
+
+
       <button id="settings-cancel">取消</button>
       <button id="settings-save">保存并生效</button>
     </div>
@@ -1391,6 +1427,19 @@ const CFG_FIELDS = [
 ];
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
+const settingsTabBtns = Array.from(document.querySelectorAll('.settings-tab-btn'));
+
+function switchSettingsTab(tab) {
+  settingsTabBtns.forEach(btn => {
+    btn.classList.toggle('on', btn.dataset.settingsTab === tab);
+  });
+  document.getElementById('settings-tab-graph').classList.toggle('hidden', tab !== 'graph');
+  document.getElementById('settings-tab-llm').classList.toggle('hidden', tab !== 'llm');
+}
+settingsTabBtns.forEach(btn => {
+  btn.addEventListener('click', () => switchSettingsTab(btn.dataset.settingsTab));
+});
+
 
 async function loadSettings() {
   try {
@@ -1416,10 +1465,14 @@ settingsBtn.addEventListener('click', () => {
   for (const [k, id] of CFG_FIELDS) {
     const el = document.getElementById(id);
     el.value = s[k] != null ? s[k] : '';
-  }
+    }
   togglePlatformFields(document.getElementById('cfg-llm-platform').value || 'dify');
-  settingsModal.classList.remove('hidden');
+
+  switchSettingsTab('graph');
+    settingsModal.classList.remove('hidden');
   loadSchemaNotes();
+
+
 });
 document.getElementById('settings-cancel').addEventListener('click',
   () => settingsModal.classList.add('hidden'));
